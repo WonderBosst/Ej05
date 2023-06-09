@@ -1,0 +1,153 @@
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-datetime
+          presentation="date"
+          [multiple]="true"
+          [highlightedDates]="highlightedDates"
+          (ionChange)="onDateChange($event)"
+          size="cover"
+          #calendar
+        ></ion-datetime>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="event">
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-justify-content-between" id="datos">
+                <ion-col size="5">
+                  <h1>{{event.fecha | date:'EEEE dd' | uppercase}}</h1>
+                  <ion-text>
+                    <h2>{{event.cliente}}</h2>
+                  </ion-text>
+                  <ion-text>
+                    <h6>{{event.celular}}</h6>
+                  </ion-text>
+                </ion-col>
+                <ion-col size="2" class="ion-text-right">
+                  <ion-chip [color]="getColor(event.tipo)">
+                    {{event.tipo}}
+                  </ion-chip>
+                  <ion-chip color="tertiary">
+                    {{event.estado}}
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-grid>
+                    <ion-row class="ion-justify-content-between">
+                      <ion-col size="3">
+                        <ion-text color="success">
+                          <h1>Precio</h1>
+                        </ion-text>
+                      </ion-col>
+                      <ion-col size="2" class="ion-text-right">
+                        <ion-text color="success">
+                          <h1>{{event.precio | currency}}</h1>
+                        </ion-text>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-between" id="anticipo">
+                      <ion-col size="3">
+                        <ion-text color="warning">
+                          <h1>Anticipo</h1>
+                        </ion-text>
+                      </ion-col>
+                      <ion-col size="2" class="ion-text-right">
+                        <ion-text color="warning">
+                          <h1>- {{event.anticipo | currency}}</h1>
+                        </ion-text>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-between" id="resto">
+                      <ion-col size="3">
+                        <ion-text color="danger">
+                          <h1>Resto</h1>
+                        </ion-text>
+                      </ion-col>
+                      <ion-col size="2" class="ion-text-right">
+                        <ion-text color="danger">
+                          <h1>{{event.saldo | currency}}</h1>
+                        </ion-text>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-col>
+              </ion-row>
+              <ion-row class="ion-align-items-center">
+                <ion-col size="4">
+                  <ion-text color="primary">
+                    <h1>Cubremanteles</h1>
+                  </ion-text>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-chip *ngFor="let color of event.colorSobremantel">
+                    <ion-label> {{color}} </ion-label>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+              <ion-row class="ion-justify-content-center">
+                <ion-col size="12">
+                  <div class="caracteristica danger">
+                    <ion-text>
+                      <h2>{{event.hora}}</h2>
+                    </ion-text>
+                    <ion-icon
+                      slot="start"
+                      name="time-sharp"
+                      size="large"
+                    ></ion-icon>
+                  </div>
+                  <div class="caracteristica primary">
+                    <ion-text>
+                      <h2>{{event.alberca}}</h2>
+                    </ion-text>
+                    <ion-icon
+                      slot="start"
+                      name="water-sharp"
+                      size="large"
+                    ></ion-icon>
+                  </div>
+                  <div class="caracteristica success">
+                    <ion-text>
+                      <h2>{{event.personas}}</h2>
+                    </ion-text>
+                    <ion-icon
+                      slot="start"
+                      name="person-sharp"
+                      size="large"
+                    ></ion-icon>
+                  </div>
+                  <div
+                    class="caracteristica danger logico"
+                    *ngIf="event.brincolin"
+                  >
+                    <ion-icon
+                      slot="start"
+                      name="happy-sharp"
+                      size="large"
+                    ></ion-icon>
+                  </div>
+                  <div
+                    class="caracteristica primary logico"
+                    *ngIf="event.mesaRegalos"
+                  >
+                    <ion-icon
+                      slot="start"
+                      name="gift-sharp"
+                      size="large"
+                    ></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

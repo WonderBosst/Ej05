@@ -1,0 +1,308 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Nuevo Evento </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="eventoForm">
+    <ion-item>
+      <ion-label>Fecha y Hora</ion-label>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime
+            id="datetime"
+            displayFormat="DD/MM/YYYY HH:mm"
+            pickerFormat="DD/MM/YYYY HH:mm"
+            (ionChange)="setFechaHora($event)"
+            [isDateEnabled]="fechaDesocupada()"
+            locale="es-MX"
+            #fecha
+          ></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+    <ng-container *ngFor="let error of mensajes_validacion.fecha">
+      <ion-item
+        class="error-message"
+        *ngIf="eventoForm.get('fecha')?.hasError(error.tipo)"
+      >
+        <ion-label>{{ error.mensaje }}</ion-label>
+      </ion-item>
+    </ng-container>
+    <ng-container *ngFor="let error of mensajes_validacion.hora">
+      <ion-item
+        class="error-message"
+        *ngIf="eventoForm.get('hora')?.hasError(error.tipo) && eventoForm.get('hora')?.touched"
+      >
+        <ion-label>{{ error.mensaje }}</ion-label>
+      </ion-item>
+    </ng-container>
+    <ion-item>
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-input
+        label="Nombre"
+        labelPlacement="floating"
+        type="text"
+        formControlName="cliente"
+      ></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of mensajes_validacion.cliente">
+      <ion-item
+        class="error-message"
+        *ngIf="eventoForm.get('cliente')?.hasError(error.tipo) && eventoForm.get('cliente')?.touched"
+      >
+        <ion-label>{{ error.mensaje }}</ion-label>
+      </ion-item>
+    </ng-container>
+    <ion-item>
+      <ion-icon name="call" slot="start"></ion-icon>
+      <ion-input
+        label="Telefono"
+        labelPlacement="floating"
+        type="tel"
+        formControlName="celular"
+      ></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of mensajes_validacion.celular">
+      <ion-item
+        class="error-message"
+        *ngIf="eventoForm.get('celular')?.hasError(error.tipo) && eventoForm.get('celular')?.touched"
+      >
+        <ion-label>{{ error.mensaje }}</ion-label>
+      </ion-item>
+    </ng-container>
+    <ion-item>
+      <ion-icon name="information-circle" slot="start"></ion-icon>
+      <ion-textarea
+        label="Descripción"
+        labelPlacement="floating"
+        formControlName="descripcion"
+      ></ion-textarea>
+    </ion-item>
+    <ng-container *ngFor="let error of mensajes_validacion.descripcion">
+      <ion-item
+        class="error-message"
+        *ngIf="eventoForm.get('descripcion')?.hasError(error.tipo) && eventoForm.get('descripcion')?.touched"
+      >
+        <ion-label>{{ error.mensaje }}</ion-label>
+      </ion-item>
+    </ng-container>
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="3">
+          <ion-item>
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <ion-select
+              interface="popover"
+              placeholder="Seleccione un tipo de evento"
+              label="Tipo de evento"
+              labelPlacement="floating"
+              formControlName="tipo"
+            >
+              <ion-select-option value="Cumpleaños">
+                Cumplea&ntilde;os
+              </ion-select-option>
+              <ion-select-option value="XV años">
+                XV a&ntilde;os
+              </ion-select-option>
+              <ion-select-option value="Boda"> Boda </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ng-container *ngFor="let error of mensajes_validacion.tipo">
+            <ion-item
+              class="error-message"
+              *ngIf="eventoForm.get('tipo')?.hasError(error.tipo) && eventoForm.get('tipo')?.touched"
+            >
+              <ion-label class="ion-text-wrap">{{ error.mensaje }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-icon name="color-fill" slot="start"></ion-icon>
+            <ion-select
+              interface="popover"
+              placeholder="Seleccione colores"
+              multiple="true"
+              label="Colores sobremanteles"
+              labelPlacement="floating"
+              formControlName="colorSobremantel"
+            >
+              <ion-select-option value="Blanco"> Blanco </ion-select-option>
+              <ion-select-option value="Rojo"> Rojo </ion-select-option>
+              <ion-select-option value="Azul"> Azul </ion-select-option>
+              <ion-select-option value="Negro"> Negro </ion-select-option>
+              <ion-select-option value="Rosa"> Rosa </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ng-container
+            *ngFor="let error of mensajes_validacion.colorSobremantel"
+          >
+            <ion-item
+              class="error-message"
+              *ngIf="eventoForm.get('colorSobremantel')?.hasError(error.tipo) && eventoForm.get('colorSobremantel')?.touched"
+            >
+              <ion-label class="ion-text-wrap">{{ error.mensaje }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-icon name="gift" slot="start" size="large"></ion-icon>
+            <ion-toggle formControlName="mesaRegalos">
+              Mesa de regalos
+            </ion-toggle>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-icon name="happy" slot="start" size="large"></ion-icon>
+            <ion-toggle formControlName="brincolin">Brincolin</ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="2">
+          <ion-item>
+            <ion-icon name="person-add" slot="start"></ion-icon>
+            <ion-input
+              label="Invitados"
+              labelPlacement="floating"
+              type="number"
+              formControlName="personas"
+              min="0"
+              max="1000"
+            ></ion-input>
+          </ion-item>
+          <ion-progress-bar
+            [value]="eventoForm.controls.personas.value/1000"
+          ></ion-progress-bar>
+          <ng-container *ngFor="let error of mensajes_validacion.personas">
+            <ion-item
+              class="error-message"
+              *ngIf="eventoForm.get('personas')?.hasError(error.tipo) && eventoForm.get('personas')?.touched"
+            >
+              <ion-label class="ion-text-wrap">{{ error.mensaje }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-col>
+        <ion-col size="4">
+          <ion-item>
+            <ion-range
+              aria-label=""
+              min="0"
+              max="100"
+              step="10"
+              value="50"
+              pin
+              ticks
+              snaps
+              formControlName="alberca"
+            >
+              <ion-icon name="water" slot="start"></ion-icon>
+            </ion-range>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label position="stacked">Total a pagar</ion-label>
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-text color="success">
+              <p>{{eventoForm.controls.precio.value|currency}}</p>
+            </ion-text>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-input
+              label="Anticipo"
+              labelPlacement="floating"
+              type="number"
+              formControlName="anticipo"
+            ></ion-input>
+          </ion-item>
+          <ng-container *ngFor="let error of mensajes_validacion.anticipo">
+            <ion-item
+              class="error-message"
+              *ngIf="eventoForm.get('anticipo')?.hasError(error.tipo) && eventoForm.get('anticipo')?.touched"
+            >
+              <ion-label class="ion-text-wrap">{{ error.mensaje }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="2">
+          <ion-item
+            class="ion-text-center metodo"
+            (click)="elegirMetodo('Transferencia')"
+            #tarjeta
+          >
+            <ion-label>
+              <ion-icon name="card" size="large"></ion-icon>
+              <h2>Transferencia</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="2">
+          <ion-item
+            class="ion-text-center metodo"
+            (click)="elegirMetodo('Efectivo')"
+            color="primary"
+            #efectivo
+          >
+            <ion-label>
+              <ion-icon name="cash" size="large"></ion-icon>
+              <h2>Efectivo</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ng-container *ngFor="let error of mensajes_validacion.metodo">
+          <ion-item
+            class="error-message"
+            *ngIf="eventoForm.get('metodo')?.hasError(error.tipo)"
+          >
+            <ion-label>{{ error.mensaje }}</ion-label>
+          </ion-item>
+        </ng-container>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item class="ion-text-end">
+            <ion-label>
+              <h1>Resto: {{eventoForm.controls.saldo.value| currency}}</h1>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button
+            expand="block"
+            shape="round"
+            [disabled]="!eventoForm.valid"
+            (click)="apartar()"
+          >
+            <ion-icon name="calendar-number" slot="start"></ion-icon>
+            Apartar
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button
+            expand="block"
+            shape="round"
+            color="success"
+            [disabled]="!eventoForm.valid"
+            (click)="confirmar()"
+          >
+            <ion-icon name="card" slot="start"></ion-icon>
+            Confirmar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
